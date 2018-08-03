@@ -2,6 +2,7 @@ package org.seckill.dao;
 
 import org.apache.ibatis.annotations.Param;
 import org.seckill.entiy.Seckill;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;

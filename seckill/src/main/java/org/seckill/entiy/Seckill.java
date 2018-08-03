@@ -3,7 +3,7 @@ package org.seckill.entiy;
 import java.util.Date;
 
 /**
- * @author Devin13 on 2018/7/31.
+ * @author Devin13 on 2018/8/3.
  * @version 1.0
  */
 public class Seckill {
