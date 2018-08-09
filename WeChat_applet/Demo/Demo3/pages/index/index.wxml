@@ -1,0 +1,6 @@
+<!--index.wxml-->
+<view class="container">
+  这是index的东东
+  <!-- 数据绑定 -->
+  <text class='txt-css txt-out' style="color:{{color}};">{{mytxt}}</text>
+</view>
