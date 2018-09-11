@@ -73,7 +73,7 @@ public class RegistLogController extends BasicController{
     @PostMapping("/logout")
     public JsonResult logout(String userId){
         redis.del(USER_REDIS_SESSION + ":" + userId);
-        return JsonResult.errorMsg("注销了");
+        return JsonResult.ok("注销了");
     }
 
     //创建UsersVo

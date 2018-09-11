@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
         usersMapper.insert(users);
     }
 
-    @Transactional
     @Override
     public Users queryUserForLogin(String username, String password) {
         Users users = new Users();
@@ -49,5 +48,17 @@ public class UserServiceImpl implements UserService {
         users.setPassword(password);
         Users result = usersMapper.selectOne(users);
         return result;
+    }
+
+    @Transactional
+    @Override
+    public void updateUserInfo(Users users) {
+        usersMapper.updateByPrimaryKeySelective(users);
+    }
+
+    @Override
+    public Users queryUserInfo(String userId) {
+        Users users =  usersMapper.selectByPrimaryKey(userId);
+        return users;
     }
 }

@@ -1,8 +1,11 @@
 package com.dzj.devinsvminiapi.controller;
 
 import com.dzj.UserService;
+import com.dzj.mapper.UsersMapper;
+import com.dzj.pojo.Users;
 import com.dzj.utils.JsonResult;
 
+import com.dzj.vo.UsersVo;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,10 +37,15 @@ public class UserController extends BasicController{
     @PostMapping("/uploadFace")
     public JsonResult uploadFace(String userId,
                                  @RequestParam("file") MultipartFile[] files) throws Exception {
+
+        if(StringUtils.isBlank(userId)){
+            return JsonResult.errorMsg("用户id为空！");
+        }
+
         //文件保存的命名空间
-        String fileSpace = "D:\\WXinfo\\";
+        String fileSpace = "D:/WXinfo/";
         //保存到数据库中的相对路径
-        String uploadPathDB = userId + "\\face\\";
+        String uploadPathDB = userId + "/face/";
 
         FileOutputStream fileOutputStream = null;
         InputStream inputStream = null;
@@ -49,11 +57,11 @@ public class UserController extends BasicController{
                     //文件上传的最终保存路径
                     String finalFacePath = fileSpace + uploadPathDB + fileName;
                     //设置数据库保存路径
-                    uploadPathDB += ("/" + fileName);
+                    uploadPathDB +=  fileName;
 
                     File outFile = new File(finalFacePath);
                     if (!outFile.exists()) {
-                        outFile.getParentFile().mkdir();
+                        outFile.getParentFile().mkdirs();
                         outFile.createNewFile();
                     }
                     fileOutputStream = new FileOutputStream(outFile);
@@ -72,6 +80,25 @@ public class UserController extends BasicController{
                 fileOutputStream.close();
             }
         }
-        return JsonResult.ok();
+
+        Users users = new Users();
+        users.setId(userId);
+        users.setFaceImage(uploadPathDB);
+        userService.updateUserInfo(users);
+
+        System.out.println(uploadPathDB);
+        return JsonResult.ok(uploadPathDB);
+    }
+
+    @PostMapping("/query")
+    public JsonResult query(String userId) {
+        if(StringUtils.isBlank(userId)){
+            return JsonResult.errorMsg("用户id为空！");
+        }
+        Users users = userService.queryUserInfo(userId);
+        UsersVo usersVo = new UsersVo();
+        BeanUtils.copyProperties(users,usersVo);
+        return JsonResult.ok(usersVo);
+
     }
 }

@@ -8,6 +8,7 @@ public class UsersVo {
 
     private String id;
 
+    //登录在线的凭证令牌
     private String userToken;
 
     /**
